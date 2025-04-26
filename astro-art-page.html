@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abby Hartley | Astro Art</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            color: #333;
+            line-height: 1.6;
+            background-image: url('darksky_bg.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+        
+        .header {
+            background: linear-gradient(to right, #1c66ba, #0d0917);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .intro {
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        h2 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            color: #1c66ba1c66ba;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            cursor: pointer;#0d0917
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-caption {
+            padding: 1rem;
+            background-color: white;
+        }
+        
+        .gallery-caption h3 {
+            margin-bottom: 0.5rem;
+            color: #0d0917;
+        }
+        
+        .nav {
+            background-color: #0d0917;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+        }
+        
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f1c40f;
+        }
+        
+        .footer {
+            background-color: #1c66ba;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        /* Modal styles for image expansion */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            margin-top: 2%;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+        }
+        
+        .modal-caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: white;
+            padding: 10px 0;
+            height: 150px;
+        }
+        
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+            }
+            
+            .nav-links a {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+            
+            .modal-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">AH</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="astro-art.html">Astro Art</a>
+                <a href="non-astro-art.html">Non-Astro Art</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <h1>Astrophysics Art</h1>
+    </div>
+
+    <div class="container">
+        <div class="intro">
+            <p>
+               In the summer of 2023, I had the pleasure of working with Dr. Zach Berta-Thompson as a <strong>Colorado Scholar of Astrophysics and Art (CSAA)</strong>. My project focused on the crucial (and often overlooked) contributions of women and gender minorities in this field, educating viewers on how diversity and inclusion lead to paradigm-shifting science. I want to emphasize how much representation matters for both old and new generations in astrophysics through my art. I drew each portrait/collage by hand in Procreate, and it was fun to experiment with different brushes and textures to emulate the cosmos. This art is free to download/print for personal use :-).
+            </p>
+        </div>
+
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="Annie_Jump_Cannon.jpeg" alt="Annie Jump Cannon" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3>Annie Jump Cannon</h3>
+                    <p>Pioneer astronomer who developed the stellar classification system still in use today.</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item">
+                <img src="mae_jemison.PNG" alt="Mae Jemison" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3>Mae Jemison</h3>
+                    <p>Physician, engineer and NASA astronaut who became the first Black woman to travel in space.</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item">
+                <img src="Jessica_Mink.jpeg" alt="Jessica Mink" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3>Jessica Mink</h3>
+                    <p>Astronomer and software developer known for her work on astronomical data analysis.</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item">
+                <img src="aomawa_shields.jpeg" alt="Aomawa Shields" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3>Aomawa Shields</h3>
+                    <p>Astronomer specializing in exoplanet habitability and climate modeling.</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item">
+                <img src="Claudia_Alexander.jpg" alt="Claudia Alexander" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3>Claudia Alexander</h3>
+                    <p>Planetary scientist and the final project manager of NASA's Galileo mission to Jupiter.</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item">
+                <img src="henrietta_leavitt.PNG" alt="Henrietta Leavitt" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3>Henrietta Leavitt</h3>
+                    <p>Astronomer who discovered the relationship between the luminosity and period of Cepheid variables.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="expandedImg">
+        <div id="modalCaption" class="modal-caption"></div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 Abby Hartley | All rights reserved</p>
+        <p>Department of Physics, Stanford University</p>
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("imageModal");
+        
+        // Get the image and insert it inside the modal
+        var galleryItems = document.getElementsByClassName("gallery-item");
+        var modalImg = document.getElementById("expandedImg");
+        var captionText = document.getElementById("modalCaption");
+        
+        // Add click event to all gallery items
+        for (var i = 0; i < galleryItems.length; i++) {
+            galleryItems[i].onclick = function() {
+                modal.style.display = "block";
+                modalImg.src = this.getElementsByClassName("gallery-img")[0].src;
+                captionText.innerHTML = this.getElementsByClassName("gallery-caption")[0].innerHTML;
+            }
+        }
+        
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        // Close the modal when clicking outside the image
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" && modal.style.display === "block") {
+                modal.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>
