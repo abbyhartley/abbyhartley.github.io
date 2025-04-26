@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abby Hartley | Non-Astro Art</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            color: #333;
+            line-height: 1.6;
+            background-image: url('darksky_bg.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+        
+        .header {
+            background: linear-gradient(to right, #7b28b0, #14031f);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .intro {
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        h2 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            color: #4a0063;
+        }
+        
+        /* Enhanced collage layout for many items */
+        .collage {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-auto-rows: 200px;
+            gap: 12px;
+            margin-top: 2rem;
+        }
+        
+        .collage-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .collage-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Featured center image - moved up one row */
+        .featured {
+            grid-column: 3 / span 2;
+            grid-row: 2 / span 2;
+        }
+        
+        .collage-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: 0.3s ease;
+        }
+        
+        .collage-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .collage-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: 0.3s ease;
+        }
+        
+        .collage-item:hover .collage-caption {
+            transform: translateY(0);
+        }
+        
+        .collage-caption h3 {
+            margin-bottom: 0.25rem;
+            color: #8e44ad; /* Changed to plum color */
+            font-size: 1rem;
+        }
+        
+        .gallery-date {
+            font-size: 0.8rem;
+            color: #ccc;
+            margin-bottom: 0.25rem;
+        }
+        
+        .nav {
+            background-color: #14031f;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+        }
+        
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f1c40f;
+        }
+        
+        .footer {
+            background-color: #14031f;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        /* Modal for expanded images */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .modal-content {
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+        
+        @keyframes zoom {
+            from {transform: scale(0.1)}
+            to {transform: scale(1)}
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+        }
+        
+        .modal-caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: white;
+            padding: 10px 0;
+            height: 150px;
+        }
+        
+        /* Responsive design adjustments */
+        @media (max-width: 1200px) {
+            .collage {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .featured {
+                grid-column: 2 / span 2;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .collage {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .featured {
+                grid-column: 1 / span 3;
+                grid-row: auto;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .collage {
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: 180px;
+            }
+            
+            .featured {
+                grid-column: 1 / span 2;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+            }
+            
+            .nav-links a {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+            
+            .modal-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">AH</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="astro-art.html">Astro Art</a>
+                <a href="non-astro-art.html">Non-Astro Art</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <h1>Non-Astrophysics Art</h1>
+    </div>
+
+    <div class="container">
+        <div class="intro">
+            <p>
+                No matter what research project I’m working on, I’ll always find time to draw (and occasionally paint! 😸). My work is characterized by vibrant colors, crisp linework, and contrasting textures. I love comics, so I often incorporate halftones into my drawings. In an age where AI is threatening creative fields, I find it crucial to expand into as many forms of artistic media as I can. I've painted on walls, jackets, shoes, cardboard, and even learned lithography! Creativity without soul is like music without notes -- why make art if you don't enjoy making art?
+            </p>
+        </div>
+
+        <div class="collage">
+            <!-- First 13 items -->
+            <div class="collage-item">
+                <img src="sunbeam_shoes.jpg" alt="On a Sunbeam">
+                <div class="collage-caption">
+                    <h3>On a Sunbeam</h3>
+                    <div class="gallery-date">Acrylic paint on shoes, June 2019</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="ruby.jpg" alt="Ruby">
+                <div class="collage-caption">
+                    <h3>Clawdeen Ruby</h3>
+                    <div class="gallery-date">Digital canvas, June 2024</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="oreo_fresco.jpg" alt="Oreo Wall">
+                <div class="collage-caption">
+                    <h3>Oreo "Fresco"</h3>
+                    <div class="gallery-date">Acrylic paint on wall, Sept. 2022</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="sonika.jpg" alt="Sonika">
+                <div class="collage-caption">
+                    <h3>Sonika</h3>
+                    <div class="gallery-date">Digital canvas, Dec. 2024</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="skydancer.jpg" alt="Skydancer">
+                <div class="collage-caption">
+                    <h3>Skydancer (cafe cat)</h3>
+                    <div class="gallery-date">Pen on paper, Sept. 2022</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="saki.jpg" alt="Saki">
+                <div class="collage-caption">
+                    <h3>Saki</h3>
+                    <div class="gallery-date">Digital canvas, April 2024</div>
+                </div>
+            </div>
+            
+            <!-- Featured Center Image - Now in row 2 instead of row 3 -->
+            <div class="collage-item featured">
+                <img src="self_portrait_AH.PNG" alt="Self-Portrait with Irises">
+                <div class="collage-caption">
+                    <h3>Self-Portrait with Irises</h3>
+                    <div class="gallery-date">Digital canvas, March 2025</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="josh_mitsy.jpg" alt="Josh & Mitsy">
+                <div class="collage-caption">
+                    <h3>Josh & Mitsy</h3>
+                    <div class="gallery-date">Digital canvas, April 2022</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="obanai_jacket.jpg" alt="Obanai">
+                <div class="collage-caption">
+                    <h3>Obanai</h3>
+                    <div class="gallery-date">Paint on denim, June 2020</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="genya.jpg" alt="Genya">
+                <div class="collage-caption">
+                    <h3>Genya</h3>
+                    <div class="gallery-date">Digital canvas, March 2024</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="oreo_cute.jpg" alt="Baby Oreo">
+                <div class="collage-caption">
+                    <h3>Oreoooo</h3>
+                    <div class="gallery-date">Digital canvas, Dec. 2024</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="ron_gyaru.jpg" alt="Ron">
+                <div class="collage-caption">
+                    <h3>Gyaru Ron</h3>
+                    <div class="gallery-date">Feb. 2024</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="oreo_litho.jpg" alt="Oreo Litho">
+                <div class="collage-caption">
+                    <h3>Oreo Lithograph</h3>
+                    <div class="gallery-date">Ink on limestone, April 2025</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="aleks.jpg" alt="Aleks">
+                <div class="collage-caption">
+                    <h3>Aleks</h3>
+                    <div class="gallery-date">Pen & marker on paper, Aug. 2022</div>
+                </div>
+            </div>
+            
+            <!-- Remaining items -->
+            <div class="collage-item">
+                <img src="ayo_boa.jpg" alt="Ayo Hancock">
+                <div class="collage-caption">
+                    <h3>Ayo Hancock</h3>
+                    <div class="gallery-date">Digital canvas, Jan. 2024</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="crimson_crow.jpg" alt="Crimson Crow">
+                <div class="collage-caption">
+                    <h3>Crimson Crow</h3>
+                    <div class="gallery-date">Acrylic on canvas, Jan. 2023</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="law_heart.PNG" alt="Law">
+                <div class="collage-caption">
+                    <h3>Law</h3>
+                    <div class="gallery-date">Digital canvas, March 2022</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="hakari.jpg" alt="Hakari">
+                <div class="collage-caption">
+                    <h3>Hakari</h3>
+                    <div class="gallery-date">Digital canvas, Aug. 2024</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="dhd_kaiman.PNG" alt="Kaiman^2">
+                <div class="collage-caption">
+                    <h3>Kaiman^2</h3>
+                    <div class="gallery-date">Digital canvas, July 2020</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="kokushibo.JPG" alt="Kokushibo">
+                <div class="collage-caption">
+                    <h3>Kokushibo</h3>
+                    <div class="gallery-date">Digital canvas, Nov. 2021</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="dokuga.JPG" alt="Dokuga">
+                <div class="collage-caption">
+                    <h3>Dokuga</h3>
+                    <div class="gallery-date">Digital canvas, July 2021</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="poise.PNG" alt="Poise">
+                <div class="collage-caption">
+                    <h3>Poise</h3>
+                    <div class="gallery-date">Digital canvas, Aug. 2023</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="choso_banner.PNG" alt="Choso">
+                <div class="collage-caption">
+                    <h3>Choso</h3>
+                    <div class="gallery-date">Digital canvas, Dec. 2023</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="kny_comics.jpg" alt="kny comics">
+                <div class="collage-caption">
+                    <h3>KNY Comic Box</h3>
+                    <div class="gallery-date">Pen & paint on cardboard, June 2020</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="meg_robin.jpg" alt="Robin Stallion">
+                <div class="collage-caption">
+                    <h3>Robin thee Stallion</h3>
+                    <div class="gallery-date">Digital canvas, Feb. 2024</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="poppy.JPG" alt="Poppy">
+                <div class="collage-caption">
+                    <h3>Poppy</h3>
+                    <div class="gallery-date">Digital canvas, March 2021</div>
+                </div>
+            </div>
+            
+            <div class="collage-item">
+                <img src="saiki.PNG" alt="Saiki">
+                <div class="collage-caption">
+                    <h3>Saiki</h3>
+                    <div class="gallery-date">Digital canvas, March 2024</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for expanded images -->
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="expandedImg">
+        <div id="modalCaption" class="modal-caption"></div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 Abby Hartley | All rights reserved</p>
+        <p>Department of Physics, Stanford University</p>
+    </div>
+
+    <script>
+        // JavaScript for modal image functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('expandedImg');
+            const captionText = document.getElementById('modalCaption');
+            const closeBtn = document.getElementsByClassName('close')[0];
+            
+            // Get all collage items
+            const collageItems = document.querySelectorAll('.collage-item');
+            
+            // Add click event to each collage item
+            collageItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const img = this.querySelector('img');
+                    const caption = this.querySelector('.collage-caption');
+                    
+                    modal.style.display = 'block';
+                    modalImg.src = img.src;
+                    
+                    // Get title and date from caption
+                    const title = caption.querySelector('h3').textContent;
+                    const date = caption.querySelector('.gallery-date').textContent;
+                    captionText.innerHTML = `<h3 style="color: #8e44ad; margin-bottom: 10px;">${title}</h3><p>${date}</p>`;
+                });
+            });
+            
+            // Close modal when clicking X
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside the image
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
